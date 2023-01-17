@@ -36,6 +36,8 @@ class NSClient(HTMLSession):
                 # this is probably safe in 99% of cases but i should
                 # move this to a proper bucket rate limiter someday
             return response
+        elif any(banned_page in url for banned_page in ["page=telegrams", "page=dillemas"]):
+            raise ValueError("Soon-to-be-banned page, go read up on the incoming script rules at https://forum.nationstates.net/viewtopic.php?f=15&t=526369")
         elif "nationstates.net" not in url:
             return self.post(url, data, allow_redirects=allow_redirects)
         data |= {"localid": self.localid, "chk": self.chk}
